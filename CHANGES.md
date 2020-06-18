@@ -43,3 +43,12 @@ type Mutation {
    forums(status: Status): [Forum]
    """
 ```
+
+## Changed Queries
+
+```gql
+# joi query does not return anything?(boolean) since it'll be accept or reject
+mutation join {
+  join(userId: 8, forumId: 1)
+}
+```

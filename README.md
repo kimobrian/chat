@@ -1,6 +1,27 @@
-# chat
+# Chat ([Spec file](Coding-test-backend.md))
 
 A simple chat app using GraphQL
+
+## Installation and Running
+
+- Pre-requisites
+
+  > Node JS installation
+
+- Clone the repo:
+
+  > ssh: `git@github.com:kimobrian/chat.git`
+  > https: `https://github.com/kimobrian/chat.git`
+
+- Switch into the directory with `cd chat`
+- Install dependencies with `yarn` or `npm i`
+- You can run the app in dev or prod mod:
+
+  > Dev: `yarn start:dev`
+
+  > Prod: `yarn start`
+
+- Access the app in the browser using the URL `http://localhost:3000/graphql`
 
 ### Types
 
