@@ -1,0 +1,51 @@
+# import Message from 'forums.graphql'
+# import Forum from 'forums.graphql'
+# import Member from 'members.graphql'
+
+type SuccessMessage {
+  message: String!
+}
+
+enum Status {
+  # All forums
+  ALL
+  # Only forums I've joined
+  JOINED
+  # Forums I'm not in
+  NOT_JOINED
+}
+
+input MessageInput {
+  userID: ID!
+  forumID: ID!
+  message: String
+}
+
+input User {
+  name: String!
+  avatarURL: String
+}
+
+type Mutation {
+  # join a forum
+  join(userId: ID!, forumID: ID): SuccessMessage!
+  # send a message to a forum
+  message(params: MessageInput!): Message!
+  # create a forum
+  createForum(name: String!): Forum!
+  # create a new user
+  createUser(params: User!): Member!
+}
+
+type Query {
+  # return members in a certain forum
+  members(forumID: ID!): [Member]
+  # return messages in a certain forum
+  messages(forumID: ID!): [Message]
+  # return a list of forums depending on a filter. Should default to 'ALL'
+  forums(status: String!): [Forum]
+}
+
+type Subscription {
+  messageCreated: Message
+}

@@ -1,0 +1,16 @@
+# import Member from 'members.graphql'
+
+type Message {
+  id: ID!
+  message: String!
+  forum: Forum!
+  user: Member!
+  createdAt: String
+}
+
+type Forum {
+  id: ID!
+  name: String
+  messages: [Message]
+  members: [Member]
+}

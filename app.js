@@ -1,23 +1,16 @@
 const logger = require("morgan");
+const { join } = require("path");
 const express = require("express");
 require("dotenv").config();
-const { ApolloServer, gql } = require("apollo-server-express");
+const { ApolloServer } = require("apollo-server-express");
+
+const { importSchema } = require("graphql-import");
+
+const resolvers = require("./resolvers");
+
+const typeDefs = importSchema(join(__dirname, "./typeDefs/schema.graphql"));
 
 const { ENV } = process.env;
-
-// Construct a schema, using GraphQL schema language
-const typeDefs = gql`
-  type Query {
-    hello: String
-  }
-`;
-
-// Provide resolver functions for your schema fields
-const resolvers = {
-  Query: {
-    hello: () => "Hello people!"
-  }
-};
 
 const server = new ApolloServer({
   typeDefs,

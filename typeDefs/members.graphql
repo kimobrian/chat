@@ -1,0 +1,5 @@
+type Member {
+  id: ID!
+  name: String
+  avatarURL: String
+}
