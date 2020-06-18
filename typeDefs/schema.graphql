@@ -61,9 +61,6 @@ type Query {
   return members in a certain forum
   """
   members(forumId: ID!): [Member]
-  # return messages in a certain forum
-  # messages(forumId: ID!): [Message]
-  #
   """
   return a list of forums depending on a filter. Should default to 'ALL'
   """

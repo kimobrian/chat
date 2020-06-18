@@ -11,7 +11,10 @@ module.exports = {
     return forum;
   },
   getMessages: (forumId) => {
-    return fixtures.messages.filter((msg) => +msg.forumId === +forumId);
+    const msgs = fixtures.messages.filter((msg) => +msg.forumId === +forumId);
+    return msgs.sort((a, b) => {
+      return new Date(a.createdAt) - new Date(b.createdAt);
+    });
   },
   joinForum: (userId, forumId) => {
     const forum = fixtures.forums.find((forum) => +forum.id === +forumId);
@@ -31,7 +34,7 @@ module.exports = {
     const forumExists = fixtures.forums.find((forum) => forum.name === name);
     if (forumExists) return { message: `Forum ${name} already xists` };
     const nextId = fixtures.forums.length;
-    const newForum = { id: nextId, name, members: [+userId] };
+    const newForum = { id: +nextId, name, members: [+userId] };
     fixtures.forums.push(newForum);
     return newForum;
   },

@@ -4,34 +4,14 @@ const { forums, members } = require("../controllers");
 
 module.exports = {
   Query: {
-    members(root, { forumId }) {
+    members(_, { forumId }) {
       return members.get(forumId);
     },
-    /* messages(root, { forumId }) {
-      const fId = forumId || root.id;
-      return forums.getMessages(fId);
-    }, */
     forums(_, { status = "ALL" }) {
       return forums.get(status);
     },
     forum(_, { forumId }) {
       return forums.retrieve(forumId);
-    }
-  },
-  Message: {
-    forum(msg) {
-      return forums.retrieve(msg.forumId);
-    },
-    user(msg) {
-      return members.retrieve(msg.userId);
-    }
-  },
-  Forum: {
-    members(forum) {
-      return members.get(forum.id);
-    },
-    messages(forum) {
-      return forums.getMessages(forum.id);
     }
   },
   ForumCreated: {
@@ -69,6 +49,22 @@ module.exports = {
     },
     createUser(_, { params: { name, avatarUrl = "url" } }) {
       return members.createUser(name, avatarUrl);
+    }
+  },
+  Message: {
+    forum(msg) {
+      return forums.retrieve(msg.forumId);
+    },
+    user(msg) {
+      return members.retrieve(msg.userId);
+    }
+  },
+  Forum: {
+    members(forum) {
+      return members.get(forum.id);
+    },
+    messages(forum) {
+      return forums.getMessages(forum.id);
     }
   },
   Subscription: {
