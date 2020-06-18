@@ -9,9 +9,22 @@ type Message {
   createdAt: String
 }
 
+"""
+Whether the forum should be public or private
+"""
+enum ForumState {
+  PUBLIC
+  PRIVATE
+}
+
 type Forum {
   id: ID!
   name: String
   messages: [Message]
   members: [Member]
+  state: ForumState
+  """
+  Id of forum admin
+  """
+  adminId: ID
 }

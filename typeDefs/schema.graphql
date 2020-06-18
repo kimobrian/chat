@@ -39,9 +39,9 @@ input User {
 
 type Mutation {
   """
-  join a forum
+  join a forum. Admin can accept or reject
   """
-  join(userId: ID!, forumId: ID): SuccessMessage!
+  join(userId: ID!, forumId: ID): Boolean
   """
   create a message
   """
@@ -62,7 +62,7 @@ type Query {
   """
   members(forumId: ID!): [Member]
   """
-  return a list of forums depending on a filter. Should default to 'ALL'
+  return a list of forums depending on some filters.(private or not)
   """
   forums(status: Status): [Forum]
   """

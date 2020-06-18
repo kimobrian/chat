@@ -145,7 +145,7 @@ query forums {
   }
 }
 
-" Join a forum
+# Join a forum
 mutation join {
   join(userId: 8, forumId: 1) {
     message
@@ -154,7 +154,7 @@ mutation join {
 
 # Create a forum
 mutation createForum {
-  createForum(name: "Forum Y", userId: 1 ) {
+  createForum(name: "Forum Y", userId: 1) {
     ... on SuccessMessage {
       message
     }
@@ -179,7 +179,7 @@ mutation createForum {
 
 # Create a user
 mutation createUser {
-  createUser(params: {name: "Jay"}) {
+  createUser(params: { name: "Jay" }) {
     ... on SuccessMessage {
       message
     }
@@ -191,10 +191,9 @@ mutation createUser {
   }
 }
 
-
 #Create a message
 mutation createMessage {
-  message(params: {userId: 1, forumId: 1, message: "Hi people"}) {
+  message(params: { userId: 1, forumId: 1, message: "Hi people" }) {
     ... on SuccessMessage {
       message
     }
