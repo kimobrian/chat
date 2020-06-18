@@ -1,31 +1,74 @@
 const { PubSub } = require("apollo-server-express");
 const pubsub = new PubSub();
+const { forums, members } = require("../controllers");
 
 module.exports = {
   Query: {
-    members(root, args) {
-      return "members";
+    members(root, { forumId }) {
+      return members.get(forumId);
     },
-    messages(root, args) {
-      return "messages";
+    /* messages(root, { forumId }) {
+      const fId = forumId || root.id;
+      return forums.getMessages(fId);
+    }, */
+    forums(_, { status = "ALL" }) {
+      return forums.get(status);
     },
-    forums(root, args) {
-      return "forums";
+    forum(_, { forumId }) {
+      return forums.retrieve(forumId);
+    }
+  },
+  Message: {
+    forum(msg) {
+      return forums.retrieve(msg.forumId);
+    },
+    user(msg) {
+      return members.retrieve(msg.userId);
+    }
+  },
+  Forum: {
+    members(forum) {
+      return members.get(forum.id);
+    },
+    messages(forum) {
+      return forums.getMessages(forum.id);
+    }
+  },
+  ForumCreated: {
+    __resolveType(obj) {
+      if (obj.message) {
+        return "SuccessMessage";
+      } else return "Forum";
+    }
+  },
+  UserCreated: {
+    __resolveType(obj) {
+      if (obj.message) {
+        return "SuccessMessage";
+      } else return "Member";
+    }
+  },
+  MessageCreated: {
+    __resolveType(obj) {
+      if (obj.message) {
+        return "SuccessMessage";
+      } else return "Message";
     }
   },
   Mutation: {
-    join(root, args) {
-      return "join";
+    join(_, { userId, forumId }) {
+      return forums.joinForum(userId, forumId);
     },
-    message(root, args) {
-      pubsub.publish("MESSAGE_CREATED", { messageCreated: args });
-      return "message";
+    message(_, { params: { userId, forumId, message } }) {
+      const msg = forums.createMessage(userId, forumId, message);
+      pubsub.publish("MESSAGE_CREATED", { ...msg });
+      return msg;
     },
-    createForum(root, args) {
-      return "forum";
+    createForum(_, { name, userId }) {
+      return forums.createForum(name, userId);
     },
-    createUser(root, args) {
-      return "user";
+    createUser(_, { params: { name, avatarUrl = "url" } }) {
+      return members.createUser(name, avatarUrl);
     }
   },
   Subscription: {

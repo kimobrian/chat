@@ -2,22 +2,33 @@
 # import Forum from 'forums.graphql'
 # import Member from 'members.graphql'
 
+# This message can either +ve or -ve
 type SuccessMessage {
   message: String!
 }
 
+union ForumCreated = Forum | SuccessMessage
+union UserCreated = Member | SuccessMessage
+union MessageCreated = Message | SuccessMessage
+
 enum Status {
-  # All forums
+  """
+  All forums
+  """
   ALL
-  # Only forums I've joined
+  """
+  Only forums I've joined
+  """
   JOINED
-  # Forums I'm not in
+  """
+  Forums I'm not in
+  """
   NOT_JOINED
 }
 
 input MessageInput {
-  userID: ID!
-  forumID: ID!
+  userId: ID!
+  forumId: ID!
   message: String
 }
 
@@ -27,25 +38,45 @@ input User {
 }
 
 type Mutation {
-  # join a forum
-  join(userId: ID!, forumID: ID): SuccessMessage!
-  # send a message to a forum
-  message(params: MessageInput!): Message!
-  # create a forum
-  createForum(name: String!): Forum!
-  # create a new user
-  createUser(params: User!): Member!
+  """
+  join a forum
+  """
+  join(userId: ID!, forumId: ID): SuccessMessage!
+  """
+  create a message
+  """
+  message(params: MessageInput!): MessageCreated!
+  """
+  create a forum
+  """
+  createForum(name: String!, userId: ID!): ForumCreated!
+  """
+  create a new user
+  """
+  createUser(params: User!): UserCreated!
 }
 
 type Query {
-  # return members in a certain forum
-  members(forumID: ID!): [Member]
+  """
+  return members in a certain forum
+  """
+  members(forumId: ID!): [Member]
   # return messages in a certain forum
-  messages(forumID: ID!): [Message]
-  # return a list of forums depending on a filter. Should default to 'ALL'
-  forums(status: String!): [Forum]
+  # messages(forumId: ID!): [Message]
+  #
+  """
+  return a list of forums depending on a filter. Should default to 'ALL'
+  """
+  forums(status: Status): [Forum]
+  """
+  return a single forum with members and messages
+  """
+  forum(forumId: ID!): Forum
 }
 
 type Subscription {
-  messageCreated: Message
+  """
+  subscribe to new messages
+  """
+  messageCreated: MessageCreated
 }

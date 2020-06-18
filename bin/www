@@ -83,4 +83,7 @@ function onListening() {
   debug(
     `🚀 Server ready a  http://localhost:${port}${graphQLServer.graphqlPath}`
   );
+  debug(
+    `🚀 Subscriptions ready at ws://localhost:${port}${graphQLServer.subscriptionsPath}`
+  );
 }

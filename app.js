@@ -3,11 +3,9 @@ const { join } = require("path");
 const express = require("express");
 require("dotenv").config();
 const { ApolloServer } = require("apollo-server-express");
-
 const { importSchema } = require("graphql-import");
 
 const resolvers = require("./resolvers");
-
 const typeDefs = importSchema(join(__dirname, "./typeDefs/schema.graphql"));
 
 const { ENV } = process.env;
